@@ -1,0 +1,10 @@
+package com.evergent.corejava.ganesh.application4;
+
+public abstract class BaseTab implements MenuTab {
+
+    protected void printHeader(String title) {
+        System.out.println(ColorUtils.HEADER_COLOR + "===========================" + ColorUtils.RESET);
+        System.out.println(ColorUtils.HEADER_COLOR + "|       " + title + "        |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.HEADER_COLOR + "===========================" + ColorUtils.RESET);
+    }
+}

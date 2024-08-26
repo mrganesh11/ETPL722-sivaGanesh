@@ -1,0 +1,6 @@
+package com.evergent.corejava.ganesh.application4;
+
+public abstract class BaseTab implements MenuTab
+{
+    protected abstract void printHeader(String title);
+}

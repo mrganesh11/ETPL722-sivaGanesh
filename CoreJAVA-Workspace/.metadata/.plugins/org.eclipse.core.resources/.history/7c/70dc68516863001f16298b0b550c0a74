@@ -1,0 +1,10 @@
+package com.evergent.corejava.collections;
+
+public class CF6_ListIterator {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

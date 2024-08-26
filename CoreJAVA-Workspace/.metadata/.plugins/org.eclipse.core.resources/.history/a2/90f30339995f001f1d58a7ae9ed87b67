@@ -1,0 +1,35 @@
+package com.evergent.corejava.exceptionahandling;
+
+class ProductImpl9 extends Exception{
+	public ProductImpl9(String message)
+	{
+		System.out.println("Hello : "+message);
+	}
+}
+public class ProductImp9{
+	int pno=105;
+	public void myData()throws ProductImpl9
+	{
+		if(pno>100)
+		{
+			throw new ProductImpl9("There is no products");
+		}
+		else
+		{
+			System.out.println("Product is there");
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		try
+		{
+			ProductImpl p1=new ProductImpl();
+			p1.myData();
+		}
+		catch(ProductImpl9 e)
+		{
+			System.out.println(e);
+		}
+	}
+
+}

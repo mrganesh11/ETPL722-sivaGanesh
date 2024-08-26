@@ -1,0 +1,69 @@
+package com.evergent.corejava.ganesh.application4;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+
+
+//Main class PharmacyApplication
+public class PharmacyApplication {
+
+ private final InventoryTab inventoryTab = new InventoryTab();
+ private final SalesTab salesTab = new SalesTab();
+ private final AccountTab accountTab = new AccountTab();
+
+ public void start(Scanner sc) throws IOException {
+     while (true) {
+         System.out.println("\n\n" + ColorUtils.INFO_COLOR + "\t\t\t\t*** WELCOME TO PHARMACY MANAGEMENT ***" + ColorUtils.RESET);
+         displayMainMenu();
+         String userChoice = sc.nextLine().toUpperCase();
+         switch (userChoice) {
+             case "I":
+                 handleTab(inventoryTab, sc);
+                 break;
+             case "S":
+                 handleTab(salesTab, sc);
+                 break;
+             case "A":
+                 handleTab(accountTab, sc);
+                 break;
+             case "E":
+                 System.out.println(ColorUtils.SUCCESS_COLOR + "Exiting the application. Thank you!" + ColorUtils.RESET);
+                 sc.close();
+                 System.exit(0);
+                 break;
+             default:
+                 System.out.println(ColorUtils.ERROR_COLOR + "Invalid choice. Please try again." + ColorUtils.RESET);
+         }
+     }
+ }
+
+ private void displayMainMenu() {
+     System.out.println(ColorUtils.INFO_COLOR + "========================" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "| Pharmacy Main Menu   |" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "========================" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "| I - Inventory Tab    |" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "| S - Sales Tab        |" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "| A - Account Tab      |" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "| E - Exit             |" + ColorUtils.RESET);
+     System.out.println(ColorUtils.INFO_COLOR + "========================" + ColorUtils.RESET);
+     System.out.print(ColorUtils.INPUT_COLOR + "Enter your Choice (I, S, A, E): " + ColorUtils.RESET);
+ }
+
+ private void handleTab(MenuTab tab, Scanner sc) {
+     while (true) {
+         tab.displayMenu();
+         String choice = sc.nextLine().toUpperCase();
+         if (choice.equals("M")) {
+             break;
+         }
+         tab.handleChoice(choice, sc);
+     }
+ }
+
+ public static void main(String[] args) throws IOException {
+     Scanner sc = new Scanner(System.in);
+     new PharmacyApplication().start(sc);
+ }
+}

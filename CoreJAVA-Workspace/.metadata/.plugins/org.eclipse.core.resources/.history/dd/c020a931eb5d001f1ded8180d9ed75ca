@@ -1,0 +1,5 @@
+package com.evergent.corejava.ram.application3;
+
+public interface EmployeeInterface {
+
+}

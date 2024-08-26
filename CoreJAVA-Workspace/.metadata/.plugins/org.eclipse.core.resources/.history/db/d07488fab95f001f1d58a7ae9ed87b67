@@ -1,0 +1,18 @@
+package com.evergent.corejava.exceptionahandling;
+
+public class UserDefinedExceptionDemo13 //ArrayIndexOutOfBoundException
+{
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int num[]= {1,2,3,4,5};
+		try
+		{
+			System.out.println("Accessing elemnt at index 10 : "+num[10]);
+		}
+		catch(ArrayIndexOutOfBoundException e)
+		{
+			
+		}
+	}
+
+}

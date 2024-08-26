@@ -1,0 +1,202 @@
+package com.evergent.corejava.ganesh.application4;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+class InventoryTab extends BaseTab 
+{
+	   protected void printHeader(String title)
+	    {
+	        System.out.println(ColorUtils.HEADER_COLOR + "===========================" + ColorUtils.RESET);
+	        System.out.println(ColorUtils.HEADER_COLOR + "       " + title + "         " + ColorUtils.RESET);
+	        System.out.println(ColorUtils.HEADER_COLOR + "===========================" + ColorUtils.RESET);
+	    }
+    public void displayMenu() 
+    {
+        printHeader("Inventory");
+        System.out.println(ColorUtils.INFO_COLOR + "| C - Check Medicine      |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "| B - Browse Medicines    |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "| U - Update Medicine     |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "| M - Return to Main Menu |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "===========================" + ColorUtils.RESET);
+        System.out.print(ColorUtils.INPUT_COLOR + "Enter your Choice (C,B,U,M) : " + ColorUtils.RESET);
+    }
+    public void handleChoice(String choice, Scanner sc) 
+    {
+        switch(choice)
+        {
+            case "C":
+                checkMedicine(sc);
+                break;
+            case "B":
+                browseMedicines();
+                break;
+            case "U":
+                updateMedicineCost(sc);
+                break;
+            case "M":
+                break;
+            default:
+                System.out.println(ColorUtils.ERROR_COLOR + "Invalid choice. Please try again." + ColorUtils.RESET);
+        }
+    }
+    private void checkMedicine(Scanner sc) 
+    {
+        System.out.print(ColorUtils.INPUT_COLOR + "Enter Medicine Code (A, B, C): " + ColorUtils.RESET);
+        String medicineCode = sc.nextLine().toUpperCase();
+        Medicine medicine = Medicine.getMedicineByCode(medicineCode);
+        if (medicine != null)
+        {
+            System.out.println(ColorUtils.SUCCESS_COLOR + "Medicine " + medicine.getCode() + " is available with cost Rs." + medicine.getCost() + ColorUtils.RESET);
+        }
+        else 
+        {
+            System.out.println(ColorUtils.ERROR_COLOR + "Invalid Medicine Code." + ColorUtils.RESET);
+        }
+    }
+    private void browseMedicines()
+    {
+        Medicine[] medicines = Medicine.getAllMedicines();
+        for (Medicine medicine : medicines) 
+        {
+            System.out.println(ColorUtils.INFO_COLOR + medicine.getCode() + " - Medicine " + medicine.getCode() + " \t Rs." + medicine.getCost() + ColorUtils.RESET);
+        }
+    }
+    private void updateMedicineCost(Scanner sc) 
+    {
+        System.out.print(ColorUtils.INPUT_COLOR + "Enter Medicine Code (A, B, C): " + ColorUtils.RESET);
+        String medicineCode = sc.nextLine().toUpperCase();
+        Medicine medicine = Medicine.getMedicineByCode(medicineCode);
+        if(medicine!=null)
+        {
+            System.out.print(ColorUtils.INPUT_COLOR + "Enter new cost for Medicine " + medicine.getCode() + ": " + ColorUtils.RESET);
+            medicine.setCost(Integer.parseInt(sc.nextLine()));
+            System.out.println(ColorUtils.SUCCESS_COLOR + "Medicine " + medicine.getCode() + " cost updated to Rs." + medicine.getCost() + ColorUtils.RESET);
+        } 
+        else 
+        {
+            System.out.println(ColorUtils.ERROR_COLOR + "Invalid Medicine Code." + ColorUtils.RESET);
+        }
+    }
+}
+
+// AccountTab class
+class AccountTab extends BaseTab 
+{
+	   protected void printHeader(String title)
+	    {
+	        System.out.println(ColorUtils.HEADER_COLOR + "===========================" + ColorUtils.RESET);
+	        System.out.println(ColorUtils.HEADER_COLOR + "       " + title + "         " + ColorUtils.RESET);
+	        System.out.println(ColorUtils.HEADER_COLOR + "===========================" + ColorUtils.RESET);
+	    }
+    private static String accountName = "Default User";
+    private static String accountEmail = "user@example.com";
+    public void displayMenu() 
+    {
+        printHeader("My Account");
+        System.out.println(ColorUtils.INFO_COLOR + "| V - View Account        |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "| U - Update Account      |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "| M - Return to Main Menu |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "===========================" + ColorUtils.RESET);
+        System.out.print(ColorUtils.INPUT_COLOR + "Enter your Choice (V,U,M) : " + ColorUtils.RESET);
+    }
+    public void handleChoice(String choice, Scanner sc) 
+    {
+        switch(choice)
+        {
+            case "V":
+                viewAccountDetails();
+                break;
+            case "U":
+                updateAccountDetails(sc);
+                break;
+            case "M":
+                break;
+            default:
+                System.out.println(ColorUtils.ERROR_COLOR + "Invalid choice. Please try again." + ColorUtils.RESET);
+        }
+    }
+    private void viewAccountDetails() 
+    {
+        System.out.println(ColorUtils.INFO_COLOR + "=================================" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "|          Account Details      |" + ColorUtils.RESET);
+        System.out.println(ColorUtils.INFO_COLOR + "=================================" + ColorUtils.RESET);
+        System.out.println("Name: " + accountName);
+        System.out.println("Email: " + accountEmail);
+    }
+    private void updateAccountDetails(Scanner sc)
+    {
+        System.out.print(ColorUtils.INPUT_COLOR + "Enter new account name: " + ColorUtils.RESET);
+        accountName = sc.nextLine();
+        System.out.print(ColorUtils.INPUT_COLOR + "Enter new account email: " + ColorUtils.RESET);
+        accountEmail = sc.nextLine();
+        System.out.println(ColorUtils.SUCCESS_COLOR + "Account details updated successfully." + ColorUtils.RESET);
+    }
+}
+//Main class PharmacyApplication
+public class PharmacyApplication 
+{
+	 private final InventoryTab inventoryTab = new InventoryTab();
+	 private final SalesTab salesTab = new SalesTab();
+	 private final AccountTab accountTab = new AccountTab();
+	 public void start(Scanner sc) throws IOException 
+	 {
+		 while(true)
+		 {
+			
+			 displayMainMenu();
+			 String userChoice = sc.nextLine().toUpperCase();
+			 switch(userChoice)
+			 {
+	             case "I":
+	                 handleTab(inventoryTab, sc);
+	                 break;
+	             case "S":
+	                 handleTab(salesTab, sc);
+	                 break;
+	             case "A":
+	                 handleTab(accountTab, sc);
+	                 break;
+	             case "E":
+	                 System.out.println(ColorUtils.SUCCESS_COLOR + "Exiting the application. Thank you!" + ColorUtils.RESET);
+	                 sc.close();
+	                 System.exit(0);
+	                 break;
+	             default:
+	                 System.out.println(ColorUtils.ERROR_COLOR + "Invalid choice. Please try again." + ColorUtils.RESET);
+	         }
+		 }
+	 }
+	 private void displayMainMenu() 
+	 {
+	     System.out.println(ColorUtils.INFO_COLOR + "========================" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "| Pharmacy Main Menu   |" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "========================" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "| I - Inventory Tab    |" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "| S - Sales Tab        |" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "| A - Account Tab      |" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "| E - Exit             |" + ColorUtils.RESET);
+	     System.out.println(ColorUtils.INFO_COLOR + "========================" + ColorUtils.RESET);
+	     System.out.print(ColorUtils.INPUT_COLOR + "Enter your Choice (I, S, A, E): " + ColorUtils.RESET);
+	 }
+	 private void handleTab(MenuTab tab, Scanner sc) 
+	 {
+		 while(true)
+		 {
+			 tab.displayMenu();
+			 String choice = sc.nextLine().toUpperCase();
+			 if(choice.equals("M")) 
+			 {
+				 break;
+			 }
+			 tab.handleChoice(choice, sc);
+		 }
+	 }
+	 public static void main(String[] args) throws IOException
+	 {
+		 Scanner sc = new Scanner(System.in);
+		 System.out.println("\n\n" + ColorUtils.INFO_COLOR + "\t\t\t\t*** WELCOME TO PHARMACY MANAGEMENT ***" + ColorUtils.RESET);
+		 new PharmacyApplication().start(sc);
+	 }
+}

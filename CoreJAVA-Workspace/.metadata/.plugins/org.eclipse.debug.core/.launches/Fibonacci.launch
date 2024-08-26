@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/CoreJAVA_Development/src/com/evergent/corejava/logicalprogramming/Fibonacci.java"/>
+    </listAttribute>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="1"/>
+    </listAttribute>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_EXCLUDE_TEST_CODE" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.evergent.corejava.logicalprogramming.Fibonacci"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="CoreJAVA_Development"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="CoreJAVA_Development"/>
+</launchConfiguration>

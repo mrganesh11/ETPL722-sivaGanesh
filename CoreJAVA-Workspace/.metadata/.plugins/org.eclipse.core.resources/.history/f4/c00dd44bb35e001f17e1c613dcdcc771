@@ -1,0 +1,9 @@
+package com.evergent.corejava.ganesh.application4;
+import java.util.Scanner;
+//Interface MenuTab
+interface MenuTabI 
+{
+	public void displayMenu();
+	public void handleChoice(String choice, Scanner sc);
+}
+

@@ -1,0 +1,344 @@
+package com.evergent.corejava.ganesh.application2;
+
+import java.io.IOException;
+import java.util.Random;
+import java.util.Scanner;
+
+// Interface MenuTab
+interface MenuTab {
+    void displayMenu();
+    void handleChoice(String choice, Scanner sc);
+}
+
+// Abstract class BaseTab
+abstract class BaseTab implements MenuTab {
+    protected void printHeader(String title) {
+        System.out.println("===========================");
+        System.out.println("|       " + title + "        |");
+        System.out.println("===========================");
+    }
+}
+
+// Class Medicine
+class Medicine {
+    private String code;
+    private int cost;
+
+    private static final Medicine[] MEDICINES = {
+        new Medicine("A", 10),
+        new Medicine("B", 20),
+        new Medicine("C", 30)
+    };
+
+    private Medicine(String code, int cost) {
+        this.code = code;
+        this.cost = cost;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
+    }
+
+    public static Medicine getMedicineByCode(String code) {
+        for (Medicine medicine : MEDICINES) {
+            if (medicine.getCode().equals(code)) {
+                return medicine;
+            }
+        }
+        return null;
+    }
+
+    public static Medicine[] getAllMedicines() {
+        return MEDICINES;
+    }
+}
+
+// InventoryTab class
+class InventoryTab extends BaseTab {
+
+    @Override
+    public void displayMenu() {
+        printHeader("Inventory");
+        System.out.println("| C - Check Medicine      |");
+        System.out.println("| B - Browse Medicines    |");
+        System.out.println("| U - Update Medicine     |");
+        System.out.println("| M - Return to Main Menu |");
+        System.out.println("===========================");
+        System.out.print("Enter your Choice (C,B,U,M) : ");
+    }
+
+    @Override
+    public void handleChoice(String choice, Scanner sc) {
+        switch (choice) {
+            case "C":
+                checkMedicine(sc);
+                break;
+            case "B":
+                browseMedicines();
+                break;
+            case "U":
+                updateMedicineCost(sc);
+                break;
+            case "M":
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    private void checkMedicine(Scanner sc) {
+        System.out.print("Enter Medicine Code (A, B, C): ");
+        String medicineCode = sc.nextLine().toUpperCase();
+        Medicine medicine = Medicine.getMedicineByCode(medicineCode);
+        if (medicine != null) {
+            System.out.println("Medicine " + medicine.getCode() + " is available with cost Rs." + medicine.getCost());
+        } else {
+            System.out.println("Invalid Medicine Code.");
+        }
+    }
+
+    private void browseMedicines() {
+        Medicine[] medicines = Medicine.getAllMedicines();
+        for (Medicine medicine : medicines) {
+            System.out.println(medicine.getCode() + " - Medicine " + medicine.getCode() + " \t Rs." + medicine.getCost());
+        }
+    }
+
+    private void updateMedicineCost(Scanner sc) {
+        System.out.print("Enter Medicine Code (A, B, C): ");
+        String medicineCode = sc.nextLine().toUpperCase();
+        Medicine medicine = Medicine.getMedicineByCode(medicineCode);
+        if (medicine != null) {
+            System.out.print("Enter new cost for Medicine " + medicine.getCode() + ": ");
+            medicine.setCost(Integer.parseInt(sc.nextLine()));
+            System.out.println("Medicine " + medicine.getCode() + " cost updated to Rs." + medicine.getCost());
+        } else {
+            System.out.println("Invalid Medicine Code.");
+        }
+    }
+}
+
+// SalesTab class
+class SalesTab extends BaseTab {
+
+    private int totalCost = 0;
+    private int paymentAmount = 0;
+    private int additionalCharges = 0;
+    private int quantity = 0;
+
+    @Override
+    public void displayMenu() {
+        printHeader("Sales");
+        System.out.println("| T - To sell and get bill   |");
+        System.out.println("| P - Make Payment           |");
+        System.out.println("| I - Display Invoice        |");
+        System.out.println("| S - Display Summary        |");
+        System.out.println("| M - Return to Main Menu    |");
+        System.out.println("==============================");
+        System.out.print("Enter your Choice (T,P,I,S,M) : ");
+    }
+
+    @Override
+    public void handleChoice(String choice, Scanner sc) {
+        switch (choice) {
+            case "T":
+                calculateTotalCost(sc);
+                break;
+            case "P":
+                processPayment(sc);
+                break;
+            case "I":
+                displayInvoice();
+                break;
+            case "S":
+                displaySummary();
+                break;
+            case "M":
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    private void calculateTotalCost(Scanner sc) {
+        System.out.print("Enter Medicine Code (A, B, C): ");
+        String medicineCode = sc.nextLine().toUpperCase();
+        Medicine medicine = Medicine.getMedicineByCode(medicineCode);
+        if (medicine != null) {
+            System.out.print("Enter quantity: ");
+            quantity = Integer.parseInt(sc.nextLine());
+            totalCost = medicine.getCost() * quantity;
+            System.out.println("Total cost: Rs." + totalCost);
+        } else {
+            System.out.println("Invalid Medicine Code.");
+        }
+    }
+
+    private void processPayment(Scanner sc) {
+        if (totalCost == 0) {
+            System.out.println("Total cost is not calculated yet. Please calculate the total cost first.");
+        } else {
+            String otp = generateOTP();
+            System.out.println("Your OTP for payment is: " + otp);
+            System.out.print("Enter OTP: ");
+            String enteredOtp = sc.nextLine();
+            if (otp.equals(enteredOtp)) {
+                System.out.print("Enter payment amount: ");
+                paymentAmount = Integer.parseInt(sc.nextLine());
+                if (paymentAmount >= totalCost) {
+                    System.out.println("Payment successful. Change: Rs." + (paymentAmount - totalCost));
+                } else {
+                    System.out.println("Insufficient payment. Please enter a valid amount.");
+                }
+            } else {
+                System.out.println("Invalid OTP. Payment failed.");
+            }
+        }
+    }
+
+    private String generateOTP() {
+        Random random = new Random();
+        int otp = 1000 + random.nextInt(9000);
+        return String.valueOf(otp);
+    }
+
+    private void displayInvoice() {
+        System.out.println("==================================");
+        System.out.println("|              Invoice           |");
+        System.out.println("==================================");
+        System.out.println("Medicine Cost: Rs." + totalCost);
+        System.out.println("Additional Charges: Rs." + additionalCharges);
+        System.out.println("Total Amount: Rs." + (totalCost + additionalCharges));
+        System.out.println("");
+    }
+
+    private void displaySummary() {
+        System.out.println("===================================");
+        System.out.println("|             Summary             |");
+        System.out.println("===================================");
+        System.out.println("Total Cost: Rs." + totalCost);
+        System.out.println("Additional Charges: Rs." + additionalCharges);
+        System.out.println("Total Amount: Rs." + (totalCost + additionalCharges));
+        totalCost = 0;
+        System.out.println("Thank You! Buy again :)");
+        System.out.println("");
+    }
+}
+
+// AccountTab class
+class AccountTab extends BaseTab {
+
+    private static String accountName = "Default User";
+    private static String accountEmail = "user@example.com";
+
+    @Override
+    public void displayMenu() {
+        printHeader("My Account");
+        System.out.println("| V - View Account        |");
+        System.out.println("| U - Update Account      |");
+        System.out.println("| M - Return to Main Menu |");
+        System.out.println("===========================");
+        System.out.print("Enter your Choice (V,U,M) : ");
+    }
+
+    @Override
+    public void handleChoice(String choice, Scanner sc) {
+        switch (choice) {
+            case "V":
+                viewAccountDetails();
+                break;
+            case "U":
+                updateAccountDetails(sc);
+                break;
+            case "M":
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    private void viewAccountDetails() {
+        System.out.println("=================================");
+        System.out.println("|          Account Details      |");
+        System.out.println("=================================");
+        System.out.println("Name: " + accountName);
+        System.out.println("Email: " + accountEmail);
+    }
+
+    private void updateAccountDetails(Scanner sc) {
+        System.out.print("Enter new account name: ");
+        accountName = sc.nextLine();
+        System.out.print("Enter new account email: ");
+        accountEmail = sc.nextLine();
+        System.out.println("Account details updated successfully.");
+    }
+}
+
+// Main class PharmacyApplication
+public class PharmacyApplication {
+
+    private final InventoryTab inventoryTab = new InventoryTab();
+    private final SalesTab salesTab = new SalesTab();
+    private final AccountTab accountTab = new AccountTab();
+
+    public void start(Scanner sc) throws IOException {
+        while (true) {
+            displayMainMenu();
+            String userChoice = sc.nextLine().toUpperCase();
+            switch (userChoice) {
+                case "I":
+                    handleTab(inventoryTab, sc);
+                    break;
+                case "S":
+                    handleTab(salesTab, sc);
+                    break;
+                case "A":
+                    handleTab(accountTab, sc);
+                    break;
+                case "E":
+                    System.out.println("Exiting the application. Thank you!");
+                    sc.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private void displayMainMenu() {
+        System.out.println("========================");
+        System.out.println("| Pharmacy Main Menu   |");
+        System.out.println("========================");
+        System.out.println("| I - Inventory Tab    |");
+        System.out.println("| S - Sales Tab        |");
+        System.out.println("| A - Account Tab      |");
+        System.out.println("| E - Exit             |");
+        System.out.println("========================");
+        System.out.print("Enter your Choice (I, S, A, E): ");
+    }
+
+    private void handleTab(MenuTab tab, Scanner sc) {
+        while (true) {
+            tab.displayMenu();
+            String choice = sc.nextLine().toUpperCase();
+            if (choice.equals("M")) {
+                break;
+            }
+            tab.handleChoice(choice, sc);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        new PharmacyApplication().start(sc);
+    }
+}

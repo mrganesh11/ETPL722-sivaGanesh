@@ -1,0 +1,45 @@
+package com.evergent.corejava.ganesh.application4;
+// Medicine class
+class Medicine
+{
+    private String code;
+    private int cost;
+    private static final Medicine[] MEDICINES = 
+    {
+        new Medicine("A", 10),
+        new Medicine("B", 20),
+        new Medicine("C", 30)
+   	};
+    private Medicine(String code, int cost)
+    {
+        this.code = code;
+        this.cost = cost;
+    }
+    public String getCode() 
+    {
+        return code;
+    }
+    public int getCost() 
+    {
+        return cost;
+    }
+    public void setCost(int cost) 
+    {
+        this.cost = cost;
+    }
+    public static Medicine getMedicineByCode(String code) 
+    {
+        for (Medicine medicine : MEDICINES) 
+        {
+            if (medicine.getCode().equals(code)) 
+            {
+                return medicine;
+            }
+        }
+        return null;
+    }
+    public static Medicine[] getAllMedicines() 
+    {
+        return MEDICINES;
+    }
+}

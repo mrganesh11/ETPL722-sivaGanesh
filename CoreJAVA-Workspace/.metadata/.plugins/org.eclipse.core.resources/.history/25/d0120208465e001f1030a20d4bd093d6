@@ -1,0 +1,16 @@
+package com.evergent.corejava.ganesh.application4;
+
+// Abstract class BaseTab
+abstract class BaseTab implements MenuTab {
+
+    // ANSI escape codes for colors
+    private static final String RESET = "\033[0m";
+    private static final String HEADER_COLOR = "\033[44m"; // Blue background
+    private static final String TITLE_COLOR = "\033[97m"; // White text
+
+    protected void printHeader(String title) {
+        System.out.println(HEADER_COLOR + TITLE_COLOR + "===========================" + RESET);
+        System.out.println(HEADER_COLOR + TITLE_COLOR + "|       " + title + "        |" + RESET);
+        System.out.println(HEADER_COLOR + TITLE_COLOR + "===========================" + RESET);
+    }
+}

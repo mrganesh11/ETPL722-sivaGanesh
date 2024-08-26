@@ -1,0 +1,5 @@
+package com.evergent.corejava.javabeans;
+
+public class Employee {
+
+}
